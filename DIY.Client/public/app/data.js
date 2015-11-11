@@ -67,19 +67,19 @@ var data = (function() {
 
   /* Cookies start*/
 
-  function cookiesGet() {
+  function projectsGet() {
     return jsonRequester.get('api/cookies')
       .then(function(res) {
         return res.result;
       });
   }
 
-  function cookiesAdd(cookie) {
+  function projectsAdd(project) {
     var options = {
       headers: {
         'x-auth-key': localStorage.getItem(AUTH_KEY_LOCAL_STORAGE_KEY)
       },
-      data: cookie
+      data: project
     };
     return jsonRequester.post('api/cookies', options)
       .then(function(res) {
@@ -87,7 +87,7 @@ var data = (function() {
       });
   }
 
-  function cookiesLike(id) {
+  function projectsLike(id) {
     var options = {
       headers: {
         'x-auth-key': localStorage.getItem(AUTH_KEY_LOCAL_STORAGE_KEY)
@@ -103,7 +103,7 @@ var data = (function() {
       });
   }
 
-  function cookiesDislike(id) {
+  function projectsDislike(id) {
     var options = {
       headers: {
         'x-auth-key': localStorage.getItem(AUTH_KEY_LOCAL_STORAGE_KEY)
@@ -130,7 +130,7 @@ var data = (function() {
         'x-auth-key': localStorage.getItem(AUTH_KEY_LOCAL_STORAGE_KEY)
       }
     };
-    return jsonRequester.get('api/my-cookie', options)
+    return jsonRequester.get('api/my-project', options)
       .then(function(res) {
         return res.result;
       });
@@ -157,11 +157,11 @@ var data = (function() {
       hasUser: hasUser,
       get: usersGet
     },
-    cookies: {
-      get: cookiesGet,
-      add: cookiesAdd,
-      like: cookiesLike,
-      dislike: cookiesDislike
+    projects: {
+      get: projectsGet,
+      add: projectsAdd,
+      like: projectsLike,
+      dislike: projectsDislike
     },
     myCookies: {
       get: myCookiesGet

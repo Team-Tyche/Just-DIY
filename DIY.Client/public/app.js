@@ -9,7 +9,7 @@
     this.get('#/home', controllers.home.all);
     this.get('#/home/add', controllers.home.add);
 
-    this.get('#/my-cookie', controllers.myCookie.all);
+    this.get('#/my-project', controllers.myCookie.all);
 
     this.get('#/users/register', controllers.users.register);
   });

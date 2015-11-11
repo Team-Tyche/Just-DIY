@@ -14,13 +14,13 @@
 <body>
   <div id="root">
     <header class="container">
-      <div class="row">
-        <h1 class="page-header col-md-6">
+      <div class="row" id="header-container-row">
+        <h1 class="page-header col-md-9">
           <span>DIY</span>
           <br/>
           <small>Do it yourself</small>
         </h1>
-        <div class="form-inline col-md-6" id="container-sign-in">
+        <div class="form-inline col-md-3" id="container-sign-in">
           <div class="form-group">
             <label class="sr-only" for="tb-username">Username</label>
             <input type="text" class="form-control" id="tb-username" placeholder="Username">
@@ -37,14 +37,14 @@
           </div> or
           <a href="#/users/register">sign up</a>
         </div>
-        <div class="form-inline col-md-6" id="container-sign-out">
+        <div class="form-inline col-md-3" id="container-sign-out">
           <button id="btn-sign-out" class="btn btn-default">Sign out</button>
         </div>
       </div>
       <nav class="navbar navbar-default row">
         <ul class="nav navbar-nav col-md-8">
           <li><a href="#/">Home</a></li>
-          <li><a href="#/my-cookie">My cookies</a></li>
+          <li><a href="#/my-project">My projects</a></li>
         </ul>
       </nav>
     </header>
@@ -82,7 +82,7 @@
   <script src="controllers/helpers/controller-helpers.js"></script>
   <script src="controllers/users.js"></script>
   <script src="controllers/home.js"></script>
-  <script src="controllers/my-cookie.js"></script>
+  <script src="controllers/my-project.js"></script>
 
   <!-- App: Loaders -->
   <script src="app/data.js"></script>

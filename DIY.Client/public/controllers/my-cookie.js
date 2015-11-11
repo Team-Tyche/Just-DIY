@@ -7,27 +7,27 @@ var controllers = controllers || {};
       .then(function(resMyCookie) {
         myCookie = resMyCookie;
         // myCookie.timePassed =  
-        return templates.get('my-cookie');
+        return templates.get('my-project');
       }).then(function(template) {
         context.$element().html(template(myCookie));
         $('.btn.btn-success').on('click', function() {
           var $this = $(this),
-            cookieId = $this.parents('.cookie-box').attr('data-id');
-          data.cookies.like(cookieId)
-            .then(function(cookie) {
-              $this.parents('.cookie-box').find('.likes').html(cookie.likes);
+            projectId = $this.parents('.project-box').attr('data-id');
+          data.projects.like(projectId)
+            .then(function(project) {
+              $this.parents('.project-box').find('.likes').html(project.likes);
               toastr.clear();
               toastr.success('Cookie liked!');
             });
         });
         $('.btn.btn-danger').on('click', function() {
           var $this = $(this),
-            cookieId = $this.parents('.cookie-box').attr('data-id');
-          data.cookies.dislike(cookieId)
-            .then(function(cookie) {
+            projectId = $this.parents('.project-box').attr('data-id');
+          data.projects.dislike(projectId)
+            .then(function(project) {
               toastr.clear();
               toastr.error('Cookie disliked!');
-              $this.parents('.cookie-box').find('.dislikes').html(cookie.dislikes);
+              $this.parents('.project-box').find('.dislikes').html(project.dislikes);
             });
         });
       });

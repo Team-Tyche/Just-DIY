@@ -4,46 +4,46 @@ var controllers = controllers || {};
   function all(context) {
     var sortby = context.params.sortby || 'date',
       category = context.params.category || null;
-    var cookies;
+    var projects;
 
-    data.cookies.get()
-      .then(function(resCookies) {
-        cookies = resCookies;
+    data.projects.get()
+      .then(function(resProjects) {
+        projects = resProjects;
         if (category) {
-          cookies = cookies.filter(function(cookie) {
-            return cookie.category.toLowerCase() === category.toLowerCase();
+          projects = projects.filter(function(project) {
+            return project.category.toLowerCase() === category.toLowerCase();
           });
         }
 
-        cookies.sort(function(c1, c2) {
+        projects.sort(function(c1, c2) {
           if (sortby === 'date') {
             return (new Date(c2.shareDate)) - (new Date(c1.shareDate));
           }
           return c2.likes - c1.likes;
         });
-        cookies = cookies.map(function(cookie) {
-          cookie.timePast = moment(cookie.shareDate).fromNow();
-          cookie.shareDate = moment(cookie.shareDate).format('Do MMM YYYY, HH:mm');
-          return cookie;
+        projects = projects.map(function(project) {
+          project.timePast = moment(project.shareDate).fromNow();
+          project.shareDate = moment(project.shareDate).format('Do MMM YYYY, HH:mm');
+          return project;
         });
 
-        return templates.get('cookies');
+        return templates.get('projects');
       })
       .then(function(template) {
-        context.$element().html(template(cookies));
+        context.$element().html(template(projects));
 
         $('.btn-like-dislike').on('click', function() {
           var $this = $(this),
-            cookieId = $this.parents('.cookie-box').attr('data-id'),
+            projectId = $this.parents('.project-box').attr('data-id'),
             type = $this.attr('data-type'),
             promise;
           if (type === 'like') {
-            promise = data.cookies.like(cookieId);
+            promise = data.projects.like(projectId);
           } else {
-            promise = data.cookies.dislike(cookieId);
+            promise = data.projects.dislike(projectId);
           }
-          promise.then(function(cookie) {
-            $this.parents('.cookie-box').find(`.${type}s`).html(cookie[`${type}s`]);
+          promise.then(function(project) {
+            $this.parents('.project-box').find(`.${type}s`).html(project[`${type}s`]);
             toastr.clear();
             toastr.success(`Cookie ${type}d!`);
           });
@@ -51,15 +51,15 @@ var controllers = controllers || {};
 
         $('.btn-share').on('click', function() {
           var $this = $(this),
-            $cookieBox = $this.parents('.cookie-box');
-          var cookie = {
-            text: $cookieBox.find('.text').html().trim(),
-            category: $cookieBox.find('.category').html().trim(),
-            img: $cookieBox.find('img').attr('src')
+            $projectBox = $this.parents('.project-box');
+          var project = {
+            text: $projectBox.find('.text').html().trim(),
+            category: $projectBox.find('.category').html().trim(),
+            img: $projectBox.find('img').attr('src')
           };
-          data.cookies.add(cookie)
-            .then(function(cookie) {
-              toastr.success(`Cookie "${cookie.text}" reshared!`);
+          data.projects.add(project)
+            .then(function(project) {
+              toastr.success(`Cookie "${project.text}" reshared!`);
               context.redirect('#/');
             });
         });
@@ -67,14 +67,14 @@ var controllers = controllers || {};
         $('.tb-filter').on('input', function() {
           var pattern = $(this).val().toLowerCase(),
             selector = '.' + $(this).attr('data-type');
-          $('.cookie-box')
-            .each(function(index, cookieBox) {
-              var $cookieBox = $(cookieBox),
-                value = $cookieBox.find(selector).html().trim().toLowerCase();
+          $('.project-box')
+            .each(function(index, projectBox) {
+              var $projectBox = $(projectBox),
+                value = $projectBox.find(selector).html().trim().toLowerCase();
               if (value.indexOf(pattern) >= 0) {
-                $cookieBox.removeClass('hide');
+                $projectBox.removeClass('hide');
               } else {
-                $cookieBox.addClass('hide');
+                $projectBox.addClass('hide');
               }
             });
         });
@@ -82,31 +82,31 @@ var controllers = controllers || {};
   }
 
   function add(context) {
-    templates.get('cookie-add')
+    templates.get('project-add')
       .then(function(template) {
         context.$element().html(template());
         return data.categories.get();
       })
       .then(function(categories) {
 
-        $('#tb-cookie-category').autocomplete({
+        $('#tb-project-category').autocomplete({
           source: categories
         });
 
-        $('#tb-cookie-img').on('input', function() {
+        $('#tb-project-img').on('input', function() {
           var url = $(this).val();
-          $('#cookie-img-preview').attr('src', url);
+          $('#project-img-preview').attr('src', url);
         });
 
-        $('#btn-add-cookie').on('click', function() {
-          var cookie = {
-            text: $('#tb-cookie-text').val(),
-            category: $('#tb-cookie-category').val(),
-            img: $('#tb-cookie-img').val()
+        $('#btn-add-project').on('click', function() {
+          var project = {
+            text: $('#tb-project-text').val(),
+            category: $('#tb-project-category').val(),
+            img: $('#tb-project-img').val()
           };
-          data.cookies.add(cookie)
-            .then(function(cookie) {
-              toastr.success(`Cookie "${cookie.text}" addded!`);
+          data.projects.add(project)
+            .then(function(project) {
+              toastr.success(`Cookie "${project.text}" addded!`);
               context.redirect('#/home');
             });
         });
