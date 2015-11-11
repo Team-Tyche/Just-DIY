@@ -45,7 +45,7 @@ var controllers = controllers || {};
           promise.then(function(project) {
             $this.parents('.project-box').find(`.${type}s`).html(project[`${type}s`]);
             toastr.clear();
-            toastr.success(`Cookie ${type}d!`);
+            toastr.success(`Project ${type}d!`);
           });
         });
 
@@ -59,7 +59,7 @@ var controllers = controllers || {};
           };
           data.projects.add(project)
             .then(function(project) {
-              toastr.success(`Cookie "${project.text}" reshared!`);
+              toastr.success(`Project "${project.text}" reshared!`);
               context.redirect('#/');
             });
         });
@@ -106,7 +106,7 @@ var controllers = controllers || {};
           };
           data.projects.add(project)
             .then(function(project) {
-              toastr.success(`Cookie "${project.text}" addded!`);
+              toastr.success(`Project "${project.text}" addded!`);
               context.redirect('#/home');
             });
         });
