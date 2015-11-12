@@ -2,5 +2,7 @@
 {
     using Microsoft.AspNet.Identity.EntityFramework;
 
-    public class CustomUserLogin : IdentityUserLogin<int> { }
+    public class CustomUserLogin : IdentityUserLogin<int>
+    {
+    }
 }

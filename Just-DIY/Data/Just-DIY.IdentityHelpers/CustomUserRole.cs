@@ -2,5 +2,8 @@
 {
     using Microsoft.AspNet.Identity.EntityFramework;
 
-    public class CustomUserRole : IdentityUserRole<int> { }
+    public class CustomUserRole : IdentityUserRole<int>
+    {
+        
+    }
 }
