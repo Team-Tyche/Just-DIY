@@ -31,8 +31,6 @@
 
         public virtual User User { get; set; }
 
-        public int CategoryId { get; set; }
-
         public virtual Category Category { get; set; }
 
         public virtual ICollection<Vote> Votes

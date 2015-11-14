@@ -34,8 +34,6 @@
 
         public string AccountName { get; set; }
 
-
-        
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User, int> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
