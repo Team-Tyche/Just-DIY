@@ -18,8 +18,6 @@
             this.votes = new HashSet<Vote>();
         }
 
-       public int Id { get; set; }
-
         public ICollection<Favourite> Favourites
         {
             get { return this.favourites; }

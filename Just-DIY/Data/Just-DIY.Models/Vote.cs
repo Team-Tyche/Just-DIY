@@ -8,11 +8,13 @@ namespace Just_DIY.Models
         [Key, Column(Order = 0)]
         public int UserId { get; set; }
 
+        [ForeignKey("UserId")]
         public virtual User User { get; set; }
 
         [Key, Column(Order = 1)]
         public int ProjectId { get; set; }
 
+        [ForeignKey("ProjectId")]
         public virtual Project Project { get; set; }
 
         public int Value { get; set; }

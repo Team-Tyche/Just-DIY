@@ -59,9 +59,13 @@
   <ItemGroup>
     <Compile Include="CustomRoleStore.cs" />
     <Compile Include="CustomUserStore.cs" />
+    <Compile Include="Data\IJustDIYData.cs" />
+    <Compile Include="Data\JustDIYData.cs" />
     <Compile Include="Just-DIYDbContext.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\EFRepository.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

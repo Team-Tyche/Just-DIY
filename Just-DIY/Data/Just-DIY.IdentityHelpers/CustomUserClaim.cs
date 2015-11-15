@@ -2,5 +2,7 @@
 {
     using Microsoft.AspNet.Identity.EntityFramework;
 
-    public class CustomUserClaim : IdentityUserClaim<int> { }
+    public class CustomUserClaim : IdentityUserClaim<int>
+    {
+    }
 }

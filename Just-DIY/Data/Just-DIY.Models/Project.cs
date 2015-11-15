@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Project
     {
@@ -14,6 +16,7 @@
             this.favourites = new HashSet<Favourite>();
         }
 
+        [Key]
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -26,6 +29,7 @@
         
         public int? UserId { get; set; }
 
+        [ForeignKey("UserId")]
         public virtual User User { get; set; }
 
         public virtual Category Category { get; set; }

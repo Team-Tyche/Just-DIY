@@ -11,6 +11,7 @@ namespace Just_DIY.Models
             get; set;
         }
 
+        [ForeignKey("UserId")]
         public virtual User User { get; set; }
 
         [Key, Column(Order =1)]
@@ -18,7 +19,8 @@ namespace Just_DIY.Models
         {
             get; set;
         }
-
+        
+        [ForeignKey("ProjectId")]
         public virtual Project Project { get; set; }
     }
 }
