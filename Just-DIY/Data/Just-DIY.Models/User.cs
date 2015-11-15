@@ -1,13 +1,14 @@
 ﻿namespace Just_DIY.Models
 {
-    using Just_DIY.IdentityHelpers;
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    public class User : IdentityUser<int, CustomUserLogin, CustomUserRole,CustomUserClaim>
+    using Just_DIY.IdentityHelpers;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+
+    public class User : IdentityUser<int, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
         private ICollection<Favourite> favourites;
         private ICollection<Vote> votes;
@@ -36,6 +37,7 @@
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
+
             // Add custom user claims here
             return userIdentity;
         }

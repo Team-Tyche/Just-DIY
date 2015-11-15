@@ -1,8 +1,9 @@
 ﻿namespace Just_DIY
 {
+    using System.Data.Entity;
+
     using Just_DIY.Data;
     using Just_DIY.Data.Migrations;
-    using System.Data.Entity;
 
     public static class DatabaseConfig
     {

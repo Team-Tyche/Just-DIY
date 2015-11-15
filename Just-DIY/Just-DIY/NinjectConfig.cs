@@ -1,14 +1,15 @@
 ﻿namespace Just_DIY
 {
-    using IdentityHelpers;
+    using System;
+    using System.Reflection;
+
     using Data;
+    using Data.Data;
+    using IdentityHelpers;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Models;
     using Ninject;
-    using System;
-    using System.Reflection;
-    using Data.Data;
-
+    
     public static class NinjectConfig
     {
         public static Lazy<IKernel> CreateKernel = new Lazy<IKernel>(() =>

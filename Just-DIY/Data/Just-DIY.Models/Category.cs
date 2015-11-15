@@ -2,7 +2,7 @@
 {
     public enum Category
     {
-        Hardware = 0,
-        Software = 1
+        Hardware = 1,
+        Software = 2
     }
 }

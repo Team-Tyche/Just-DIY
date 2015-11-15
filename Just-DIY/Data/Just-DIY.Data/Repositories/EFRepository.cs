@@ -1,11 +1,15 @@
 ﻿namespace Just_DIY.Data.Repositories
 {
-    using Models;
-    using Microsoft.AspNet.Identity.EntityFramework;
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
+
     using IdentityHelpers;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Models;
+    using LinqKit;
+    using System.Linq.Expressions;
 
     public class EFRepository<T> : IRepository<T> where T : class
     {
@@ -18,9 +22,9 @@
             this.set = context.Set<T>();
         }
         
-        public IQueryable<T> All()
+        public ICollection<T> All()
         {
-            return this.set;
+            return this.set.ToList();
         }
 
         public void Add(T entity)
@@ -44,7 +48,12 @@
         {
             return this.set.Find(id);
         }
-        
+
+        public ICollection<T> FindWhere(Expression<Func<T, bool>> condition)
+        {
+            return this.set.AsExpandable().Where(condition).ToList();
+        }
+
         public void Update(T entity)
         {
             this.ChangeState(entity, EntityState.Modified);
@@ -58,7 +67,7 @@
         private void ChangeState(T entity, EntityState state)
         {
             var entry = this.context.Entry(entity);
-            if(entry.State == EntityState.Detached)
+            if (entry.State == EntityState.Detached)
             {
                 this.set.Attach(entity);
             }

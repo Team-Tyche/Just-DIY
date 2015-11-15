@@ -1,9 +1,10 @@
 ﻿namespace Just_DIY.Data
 {
+    using System.Data.Entity;
+
     using Just_DIY.IdentityHelpers;
     using Just_DIY.Models;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using System.Data.Entity;
 
     public class Just_DIYDbContext : IdentityDbContext<User, CustomRole, int, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
@@ -22,6 +23,5 @@
         {
             return new Just_DIYDbContext();
         }
-      
     }
 }

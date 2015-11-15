@@ -3,7 +3,6 @@
     using System.Collections.Generic;
 
     // Models returned by AccountController actions.
-
     public class ExternalLoginViewModel
     {
         public string Name { get; set; }
@@ -38,5 +37,10 @@
         public string LoginProvider { get; set; }
 
         public string ProviderKey { get; set; }
+    }
+
+    public class SimpleUser
+    {
+        public string UserName { get; set; }
     }
 }

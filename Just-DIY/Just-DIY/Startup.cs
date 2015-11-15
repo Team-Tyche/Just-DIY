@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Web.Http;
+
 using Microsoft.Owin;
-using Owin;
-using System.Web.Http;
-using Ninject.Web.WebApi.OwinHost;
 using Ninject.Web.Common.OwinHost;
+using Ninject.Web.WebApi.OwinHost;
+using Owin;
 
 [assembly: OwinStartup(typeof(Just_DIY.Startup))]
 
@@ -19,6 +17,8 @@ namespace Just_DIY
 
             var config = new HttpConfiguration();
             WebApiConfig.Register(config);
+            DatabaseConfig.Initialize();
+            MappingConfig.Initialize();
             app.UseNinjectMiddleware(() => NinjectConfig.CreateKernel.Value);
             app.UseNinjectWebApi(config);
         }

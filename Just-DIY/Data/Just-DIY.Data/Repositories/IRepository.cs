@@ -1,12 +1,16 @@
 ﻿namespace Just_DIY.Data.Repositories
 {
-    using System.Linq;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
 
     public interface IRepository<T> where T : class
     {
-        IQueryable<T> All();
+        ICollection<T> All();
 
         T Find(object id);
+
+        ICollection<T> FindWhere(Expression<Func<T, bool>> condition);
 
         void Add(T entity);
 

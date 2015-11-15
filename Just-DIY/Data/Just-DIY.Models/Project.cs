@@ -21,16 +21,17 @@
 
         public string Name { get; set; }
 
-        public DateTime CreatedOn { get; set; }
+        public DateTime? CreatedOn { get; set; }
 
         public string Content { get; set; }
 
-        public string Url { get; set; }
+        public string VideoUrl { get; set; }
         
-        public int? UserId { get; set; }
+        public int? AuthorId { get; set; }
 
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public int Points { get; set; }
+        
+        public virtual User Author { get; set; }
 
         public virtual Category Category { get; set; }
 
@@ -45,6 +46,5 @@
             get { return this.favourites; }
             set { this.favourites = value; }
         }
-
     }
 }

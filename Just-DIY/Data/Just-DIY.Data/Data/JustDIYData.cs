@@ -1,18 +1,19 @@
-﻿using System;
-using Just_DIY.Data.Repositories;
-using Just_DIY.Models;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Just_DIY.IdentityHelpers;
-using System.Collections.Generic;
-
-namespace Just_DIY.Data.Data
+﻿namespace Just_DIY.Data.Data
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Just_DIY.Data.Repositories;
+    using Just_DIY.IdentityHelpers;
+    using Just_DIY.Models;
+    using Microsoft.AspNet.Identity.EntityFramework;
+
     public class JustDIYData : IJustDIYData
     {
         private IdentityDbContext<User, CustomRole, int, CustomUserLogin, CustomUserRole, CustomUserClaim> context;
         private IDictionary<Type, object> repositories;
 
-        public JustDIYData (IdentityDbContext<User, CustomRole, int, CustomUserLogin, CustomUserRole, CustomUserClaim> context)
+        public JustDIYData(IdentityDbContext<User, CustomRole, int, CustomUserLogin, CustomUserRole, CustomUserClaim> context)
         {
             this.context = context;
             this.repositories = new Dictionary<Type, object>();
@@ -55,13 +56,13 @@ namespace Just_DIY.Data.Data
             return this.context.SaveChanges();
         }
 
-        private IRepository<T> GetRepository<T>() where T :class
+        private IRepository<T> GetRepository<T>() where T : class
         {
             var typeOfRepository = typeof(T);
 
             if (!this.repositories.ContainsKey(typeOfRepository))
             {
-                var newRepository = Activator.CreateInstance(typeof(EFRepository<T>), context);
+                var newRepository = Activator.CreateInstance(typeof(EFRepository<T>), this.context);
                 this.repositories.Add(typeOfRepository, newRepository);
             }
 
