@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Just-DIY</title>
+    <link rel="stylesheet" href="Content/bootstrap.min.css">
+    <link rel="stylesheet" href="Content/font-awesome.min.css">
+    <link rel="stylesheet" href="Content/main.css">
+    <link rel="stylesheet" href="Content/toastr.css">
+    <link rel="stylesheet" href="Content/pace.css">
+    <link rel="stylesheet" href="Content/simpleSidebar.css" />
+    <link rel="stylesheet" href="Content/auth.css" />
+    <script src="Scripts/chart.js"></script>
+</head>
+
+<body>
+    <header class="container">
+        <!-- Fixed navbar -->
+        <div class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><i class="fa fa-bolt"></i></a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="active"><a href="#shout">Shout</a></li>
+                        <li class="active"><a href="#contact">Contact</a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+    </header>
+
+    <div id="hello">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 centered">
+                    <h1>JUST DIY</h1>
+                    <h2>The place to share your Hardware &amp; Software projects</h2>
+                </div><!-- /col-lg-8 -->
+            </div><!-- /row -->
+        </div> <!-- /container -->
+    </div><!-- /hello -->
+
+    <section id="shout" style="height: 100px"></section>
+    <div id="green" style="padding: 1%">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5">
+                    <img src="img/globe.png" alt="globe">
+                </div>
+
+                <div class="col-lg-7" style="height: 300px;">
+                    <div style="height: 273px; overflow-y: scroll; border-radius: 5px; background-color: white" id="chat"></div>
+                    <div style="height: 33px">
+                        <input id="chat-inp" type="text" />
+                        <a id="chat-sub" class="">Send</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="content" class="container centered"></div>
+
+    <div id="skills">
+        <div class="container">
+            <div class="row centered">
+                <h3>OUR PROJECTS</h3>
+                <div class="col-lg-6 mt">
+                    <canvas id="javascript" height="130" width="130"></canvas>
+                    <p>Hardware</p>
+                    <br>
+                    <script>
+					var doughnutData = [
+							{
+								value: 70,
+								color:"#74cfae"
+							},
+							{
+								value : 30,
+								color : "#3c3c3c"
+							}
+						];
+						var myDoughnut = new Chart(document.getElementById("javascript").getContext("2d")).Doughnut(doughnutData);
+                    </script>
+                </div>
+                <div class="col-lg-6 mt">
+                    <canvas id="bootstrap" height="130" width="130"></canvas>
+                    <p>Software</p>
+                    <br>
+                    <script>
+					var doughnutData = [
+							{
+								value: 90,
+								color:"#74cfae"
+							},
+							{
+								value : 10,
+								color : "#3c3c3c"
+							}
+						];
+						var myDoughnut = new Chart(document.getElementById("bootstrap").getContext("2d")).Doughnut(doughnutData);
+                    </script>
+                </div>
+            </div><!-- /row -->
+        </div><!-- /container -->
+    </div><!-- /skills -->
+
+    <section id="contact"></section>
+    <div id="social">
+        <div class="container">
+            <div class="row centered">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <div class="col-md-3">
+                        <a href="#"><i class="fa fa-github"></i></a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="#"><i class="fa fa-envelope"></i></a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /container -->
+    </div><!-- /social -->
+
+
+    <div id="f">
+        <div class="container">
+            <div class="row">
+                <p>Crafted with <i class="fa fa-heart"></i> by Team Tyche</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Libs -->
+    <script src="Scripts/jquery-1.9.1.min.js"></script>
+    <script src="Scripts/sammy-0.7.5.min.js"></script>
+    <script src="Scripts/handlebars.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/toastr.min.js"></script>
+    <script src="Scripts/pace.min.js"></script>
+    <script src="tinymce/tinymce.min.js"></script>
+    <script src="http://cdn.pubnub.com/pubnub-3.7.15.min.js"></script>
+
+    <script src="app/shoutbox.js"></script>
+    <!-- App -->
+    <!-- App: Controllers -->
+    <script src="controllers/homeController.js"></script>
+    <script src="controllers/authController.js"></script>
+    <script src="controllers/panelController.js"></script>
+
+    <!-- App: Loaders -->
+    <script src="app/jsonRequester.js"></script>
+    <script src="app/templates.js"></script>
+
+    <script>
+        $('#chat-inp').css({ width: "85%" });
+        $('#chat-sub').css({
+            cursor: "pointer",
+            fontWeight: "700"
+        });
+
+        $('body').on('click', '#chat-sub', function () {
+            var $input = $('#chat-inp');
+            var text = $input.val();
+            $input.val('');
+            pubPub(text);
+        });
+    </script>
+
+    <!-- App: Start -->
+    <script src="app.js"></script>
+    
+</body>
+
+</html>
