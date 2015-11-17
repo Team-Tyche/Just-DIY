@@ -1,10 +1,16 @@
 ﻿var jsonRequester = (function () {
 
+    var LOCAL_STORAGE_USERNAME_KEY = 'signed-in-user-username',
+        LOCAL_STORAGE_AUTHKEY_KEY = 'signed-in-user-auth-key',
+        LOCAL_STORAGE_IS_LOGEED = 'signed-in-user-bool';
+
     function send(method, url, options) {
         options = options || {};
 
         var headers = options.headers || {},
           data = options.data || undefined;
+
+        console.log(options);
 
         var promise = new Promise(function (resolve, reject) {
             $.ajax({
@@ -42,18 +48,23 @@
 
     function token(url, obj)
     {
-        return $.ajax({
-                method: 'POST',
-                url: url,
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                transformRequest: function (obj) {
-                    var str = [];
-                    for (var p in obj)
-                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                    return str.join("&");
-                },
-                data: obj
-            });
+        $.ajax({
+            method: 'POST',
+            url: url,
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            transformRequest: function (obj) {
+                var str = [];
+                for (var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                return str.join("&");
+            },
+            data: obj
+        }).success(function (resp) {
+            localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, resp.userName);
+            localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, resp.access_token);
+            localStorage.setItem(LOCAL_STORAGE_IS_LOGEED, true);
+            toastr.success('People who think they know everything are a great annoyance to those of us who do.', 'Isaak Asimov');
+        });
     }
 
     return {
