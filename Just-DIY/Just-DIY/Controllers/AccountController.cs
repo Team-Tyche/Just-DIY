@@ -8,7 +8,7 @@
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
-
+    using System.Web.Http.Cors;
     using IdentityHelpers;
     using Just_DIY.Models;
     using Just_DIY.Providers;
@@ -19,9 +19,10 @@
     using Microsoft.Owin.Security;
     using Microsoft.Owin.Security.Cookies;
     using Microsoft.Owin.Security.OAuth;
-    
+
     [Authorize]
     [RoutePrefix("api/Account")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";
