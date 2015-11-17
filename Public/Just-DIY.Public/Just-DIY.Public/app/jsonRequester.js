@@ -40,11 +40,28 @@
         return send('POST', url, options);
     }
 
+    function token(url, obj)
+    {
+        return $.ajax({
+                method: 'POST',
+                url: url,
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                transformRequest: function (obj) {
+                    var str = [];
+                    for (var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                },
+                data: obj
+            });
+    }
+
     return {
         send: send,
         get: get,
         post: post,
         put: put,
-        delete: del
+        delete: del,
+        token: token
     };
 }());
