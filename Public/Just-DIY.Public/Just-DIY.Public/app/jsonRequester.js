@@ -10,8 +10,6 @@
         var headers = options.headers || {},
           data = options.data || undefined;
 
-        console.log(options);
-
         var promise = new Promise(function (resolve, reject) {
             $.ajax({
                 url: url,
@@ -43,7 +41,7 @@
     }
 
     function del(url, options) {
-        return send('POST', url, options);
+        return send('DELETE', url, options);
     }
 
     function token(url, obj)

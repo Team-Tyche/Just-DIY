@@ -220,3 +220,7 @@ a:after {
 .grid img:hover {
     opacity: 1;
 }
+
+.project-data {
+    cursor: pointer;
+}

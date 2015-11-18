@@ -241,6 +241,7 @@
     <Compile Include="Controllers\BackupController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\FavouritesController.cs" />
+    <Compile Include="Controllers\IndentifyMeController.cs" />
     <Compile Include="Controllers\ProjectsByController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\VotesController.cs" />

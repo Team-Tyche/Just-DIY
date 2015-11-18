@@ -6,17 +6,125 @@
 
 <div class="tab-content">
     <div id="post" class="tab-pane fade in active">
-        <textarea id="tinymce"></textarea>
+
+        <form id="post-project-form">
+            <select class="form-control" id="post-select">
+                <option>Hardware</option>
+                <option>Software</option>
+            </select>
+            <input type="text" class="form-control" id="post-title" placeholder="Title">
+            <textarea id="tinymce"></textarea>
+            <input type="text" class="form-control" id="post-url" placeholder="Tutorial URL">
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="reset" class="btn btn-default">Cancel</button>
+                    <button id="post-submit" type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
 
         <script type="text/javascript">
         tinymce.init({
             selector: "#tinymce"
         });
+
+        $('#post-project-form').submit(function () {
+            return false;
+        });
+
+        $('body').on('click', '#post-submit', function () {
+            var title = $('#post-title').val(),
+                url = $('#post-url').val(),
+                content = tinymce.get('tinymce').getContent();
+
+            var categoryFilter = $("#post-select option:selected").val();
+            var categoryId;
+            switch (categoryFilter) {
+                case 'Hardware': categoryId = 1; break;
+                case 'Software': categoryId = 2; break;
+            }
+
+            if (!/^(http\:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/watch\?v\=\w+$/.test(url)) {
+                url = null;
+            }
+
+            jsonRequester.get('http://localhost:29004/api/IdentifyMe', {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('signed-in-user-auth-key')
+                }
+            }).then(function (myId) {
+                jsonRequester.post('http://localhost:29004/api/Projects', {
+                    headers: { Authorization: 'Bearer ' + localStorage.getItem('signed-in-user-auth-key') },
+                    data: {
+                        "name": title,
+                        "createdOn": new Date().toJSON(),
+                        "content": content,
+                        "videoUrl": url,
+                        "authorId": myId,
+                        "categoryId": categoryId
+                    }
+                }).then(function (resp) {
+                    toastr.success('An idea isn\'t responsible for the people who believe in it.', 'Don Marquis');
+                });
+            });
+
+            $('#post-project-form')[0].reset();
+        });
         </script>
     </div>
     <div id="my-projects" class="tab-pane fade">
-        <h3>Menu 1</h3>
-        <p>Some content in menu 1.</p>
+        <script>
+            function update(resp) {
+                var $table = $('<table />');
+
+                for (var ind = 0, len = resp.length; ind < len; ind++) {
+                    $table.append('<tr><td class="col-md-3">'
+                        + resp[ind].CreatedOn
+                        + '</td><td class="col-md-4">'
+                        + resp[ind].Category
+                        + '</td><td class="col-md-4"><strong><a class="project-data" data-id="'
+                        + resp[ind].Id
+                        + '">'
+                        + resp[ind].Name
+                        + '</a></strong></td>'
+                        + '<td><span class="glyphicon glyphicon-remove col-md-1 project-del" data-id="'
+                        + resp[ind].Id
+                        + '" style="color: #f00; cursor: pointer"></span></td>'
+                        + '</tr>');
+                }
+
+                $('#my-projects').html($table);
+            }
+
+            $(document).ready(function () {
+                jsonRequester.get('http://localhost:29004/api/ProjectsBy', 
+                    {
+                        headers: {
+                            Authorization: 'Bearer ' + localStorage.getItem('signed-in-user-auth-key')
+                        }
+                    })
+                    .then(function (resp) {
+                        update(resp);
+
+                        $('body').on('click', '.project-data', function () {
+                            var $this = $(this);
+                            panelController.show($this.attr('data-id'));
+                        });
+
+                        $('body').on('click', '.project-del', function () {
+                            var $this = $(this);
+                            jsonRequester.delete('http://localhost:29004/api/Projects/' + $this.attr('data-id'))
+                            .then(function () {
+                                $this.parent().parent().remove();
+                                toastr.success('Progress is man\'s ability to complicate simplicity.', 'Thor Heyerdahl');
+                            });
+                        });
+                    })
+                    .catch(function () {
+                        toastr.error('Sorry, nothing found :(');
+                    });
+            });
+        </script>
     </div>
     <div id="all-projects" class="tab-pane fade">
         <div class="page-container">
@@ -57,7 +165,6 @@
                         case 'All': categoryId = 0; break;
                         case 'Hardware': categoryId = 1; break;
                         case 'Software': categoryId = 2; break;
-
                     }
 
                     jsonRequester.get('http://localhost:29004/api/Category/' + categoryId)
@@ -65,10 +172,23 @@
                             var $table = $('<table />');
 
                             for (var ind = 0, len = resp.length; ind < len; ind++) {
-                                $table.append('<tr><td class="col-md-4">' + resp[ind].CreatedOn + '</td><td class="col-md-4">' + resp[ind].Category + '</td><td class="col-md-4">' + resp[ind].Name + '</td></tr>')
+                                $table.append('<tr><td class="col-md-4">'
+                                    + resp[ind].CreatedOn
+                                    + '</td><td class="col-md-4">'
+                                    + resp[ind].Category
+                                    + '</td><td class="col-md-4"><strong><a class="project-data" data-id="'
+                                    + resp[ind].Id
+                                    + '">'
+                                    + resp[ind].Name
+                                    + '</a></strong></td></tr>');
                             }
 
                             $('#projects-container').html($table);
+
+                            $('body').on('click', '.project-data', function () {
+                                var $this = $(this);
+                                panelController.show($this.attr('data-id'));
+                            })
                         })
                         .catch(function () {
                             toastr.error('Sorry, nothing found :(');

@@ -139,6 +139,7 @@
     <Content Include="templates\auth.html" />
     <Content Include="templates\home.html" />
     <Content Include="templates\panel.html" />
+    <Content Include="templates\project.html" />
     <Content Include="tinymce\license.txt" />
     <Content Include="tinymce\plugins\advlist\plugin.min.js" />
     <Content Include="tinymce\plugins\anchor\plugin.min.js" />
