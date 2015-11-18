@@ -4,8 +4,9 @@
 
 namespace Just_DIY
 {
+    using System.Collections.Generic;
     using System.Web.Http;
-
+    using Clients;
     using Microsoft.Owin.Cors;
     using Ninject.Web.Common.OwinHost;
     using Ninject.Web.WebApi.OwinHost;
