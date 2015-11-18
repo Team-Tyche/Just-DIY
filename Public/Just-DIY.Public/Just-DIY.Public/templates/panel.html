@@ -44,7 +44,7 @@
                 case 'Software': categoryId = 2; break;
             }
 
-            if (!/^(http\:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/watch\?v\=\w+$/.test(url)) {
+            if (!/^(http\:\/\/|https\:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/watch\?v\=\w+$/.test(url)) {
                 url = null;
             }
 
