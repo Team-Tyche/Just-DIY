@@ -25,22 +25,21 @@
 
                     <!-- sidebar -->
                     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-                        <form>
-                            <select class="form-control" id="select">
+                        <form id="filter-form">
+                            <select class="form-control" id="filter-select">
                                 <option>All</option>
                                 <option>Hardware</option>
                                 <option>Software</option>
                             </select>
 
-                            <input type="search" class="form-control" placeholder="Keyword" />
+                            <input type="search" id="filter-search" class="form-control" placeholder="Keyword" />
 
-                            <a class="btn btn-block">Update</a>
+                            <a id="filter-submit" class="btn btn-block">Update</a>
                         </form>
                     </div>
 
                     <!-- main area -->
-                    <div class="col-xs-12 col-sm-9" style="padding: 1%">
-                    Lalalalal
+                    <div id="projects-container" class="col-xs-12 col-sm-9" style="padding: 1%">
                     </div><!-- /.col-xs-12 main -->
                 </div><!--/.row-->
             </div><!--/.container-->
@@ -49,6 +48,31 @@
             $(document).ready(function () {
                 $('[data-toggle=offcanvas]').click(function () {
                     $('.row-offcanvas').toggleClass('active');
+                });
+
+                $('#filter-submit').click(function () {
+                    var categoryFilter = $("#filter-select option:selected").val();
+                    var categoryId;
+                    switch (categoryFilter) {
+                        case 'All': categoryId = 0; break;
+                        case 'Hardware': categoryId = 1; break;
+                        case 'Software': categoryId = 2; break;
+
+                    }
+
+                    jsonRequester.get('http://localhost:29004/api/Category/' + categoryId)
+                        .then(function (resp) {
+                            var $table = $('<table />');
+
+                            for (var ind = 0, len = resp.length; ind < len; ind++) {
+                                $table.append('<tr><td class="col-md-4">' + resp[ind].CreatedOn + '</td><td class="col-md-4">' + resp[ind].Category + '</td><td class="col-md-4">' + resp[ind].Name + '</td></tr>')
+                            }
+
+                            $('#projects-container').html($table);
+                        })
+                        .catch(function () {
+                            toastr.error('Sorry, nothing found :(');
+                        });
                 });
             }); 
         </script>
