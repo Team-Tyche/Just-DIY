@@ -2,6 +2,7 @@
     <li class="active"><a data-toggle="tab" href="#post"><i class="glyphicon glyphicon-pencil"></i> New Project</a></li>
     <li><a data-toggle="tab" href="#my-projects"><i class="glyphicon glyphicon-folder-open"></i> My Projects</a></li>
     <li><a data-toggle="tab" href="#all-projects"><i class="glyphicon glyphicon-th"></i> All Projects</a></li>
+    <li><a data-toggle="tab" href="#favourite-projects"><i class="glyphicon glyphicon-heart"></i> Favourites</a></li>
 </ul>
 
 <div class="tab-content">
@@ -82,11 +83,9 @@
                         + resp[ind].CreatedOn
                         + '</td><td class="col-md-4">'
                         + resp[ind].Category
-                        + '</td><td class="col-md-4"><strong><a class="project-data" data-id="'
-                        + resp[ind].Id
-                        + '">'
+                        + '</td><td class="col-md-4"><strong>'
                         + resp[ind].Name
-                        + '</a></strong></td>'
+                        + '</strong></td>'
                         + '<td><span class="glyphicon glyphicon-remove col-md-1 project-del" data-id="'
                         + resp[ind].Id
                         + '" style="color: #f00; cursor: pointer"></span></td>'
@@ -106,11 +105,6 @@
                     .then(function (resp) {
                         update(resp);
 
-                        $('body').on('click', '.project-data', function () {
-                            var $this = $(this);
-                            panelController.show($this.attr('data-id'));
-                        });
-
                         $('body').on('click', '.project-del', function () {
                             var $this = $(this);
                             jsonRequester.delete('http://localhost:29004/api/Projects/' + $this.attr('data-id'))
@@ -121,7 +115,6 @@
                         });
                     })
                     .catch(function () {
-                        toastr.error('Sorry, nothing found :(');
                     });
             });
         </script>
@@ -172,29 +165,100 @@
                             var $table = $('<table />');
 
                             for (var ind = 0, len = resp.length; ind < len; ind++) {
-                                $table.append('<tr><td class="col-md-4">'
+                                $table.append('<tr><td class="col-md-3">'
                                     + resp[ind].CreatedOn
-                                    + '</td><td class="col-md-4">'
+                                    + '</td>'
+                                    + '<td class="col-md-4">'
                                     + resp[ind].Category
                                     + '</td><td class="col-md-4"><strong><a class="project-data" data-id="'
                                     + resp[ind].Id
                                     + '">'
                                     + resp[ind].Name
-                                    + '</a></strong></td></tr>');
+                                    + '</a></strong></td>'
+                                    + '<td class="col-md-1"> <a class="glyphicon glyphicon-heart-empty like-project" data-id="'
+                                    + resp[ind].Id
+                                    + '"></a></td>'
+                                    + '</tr>');
                             }
 
                             $('#projects-container').html($table);
 
                             $('body').on('click', '.project-data', function () {
                                 var $this = $(this);
-                                panelController.show($this.attr('data-id'));
-                            })
+                                panelController.show($this.attr('data-id'), '#projects-container');
+                            });
+
+                            $('body').on('click', '.like-project', function () {
+                                var $this = $(this);
+
+                                jsonRequester.post('http://localhost:29004/api/Favourites/' + $this.attr('data-id'), {
+                                    headers: {
+                                        Authorization: 'Bearer ' + localStorage.getItem('signed-in-user-auth-key')
+                                    }
+                                }).then(function (myId) {
+                                    toastr.success('Reality continues to ruin my life.', 'Bill Watterson');
+                                }).catch(function () {
+                                    toastr.error('You\'ve already sent this one to favourites.', 'Don\'t cheat!');
+                                });
+
+                            });
                         })
                         .catch(function () {
                             toastr.error('Sorry, nothing found :(');
                         });
                 });
-            }); 
+            });
         </script>
+    </div>
+    <div id="favourite-projects" class="tab-pane fade">
+         <script>
+             function updateFavs(resp) {
+                 var $table = $('<table />');
+
+                 for (var ind = 0, len = resp.length; ind < len; ind++) {
+                     $table.append('<tr><td class="col-md-3">'
+                         + resp[ind].CreatedOn
+                         + '</td><td class="col-md-4">'
+                         + resp[ind].Category
+                         + '</td><td class="col-md-4"><strong>'
+                         + resp[ind].Name
+                         + '</strong></td>'
+                         + '<td><span class="glyphicon glyphicon-remove col-md-1 fav-del" data-id="'
+                         + resp[ind].Id
+                         + '" style="color: #f00; cursor: pointer"></span></td>'
+                         + '</tr>');
+                 }
+
+                 $('#favourite-projects').html($table);
+             }
+
+             $(document).ready(function () {
+                 jsonRequester.get('http://localhost:29004/api/Favourites',
+                     {
+                         headers: {
+                             Authorization: 'Bearer ' + localStorage.getItem('signed-in-user-auth-key')
+                         }
+                     })
+                     .then(function (resp) {
+                         updateFavs(resp);
+
+                         $('body').on('click', '.fav-del', function () {
+                             var $this = $(this);
+                             jsonRequester.delete('http://localhost:29004/api/Favourites/' + $this.attr('data-id'),
+                                 {
+                                     headers: {
+                                         Authorization: 'Bearer ' + localStorage.getItem('signed-in-user-auth-key')
+                                     }
+                                 })
+                             .then(function () {
+                                 $this.parent().parent().remove();
+                                 toastr.success('Progress is man\'s ability to complicate simplicity.', 'Thor Heyerdahl');
+                             });
+                         });
+                     })
+                     .catch(function () {
+                     });
+             });
+         </script>
     </div>
 </div>

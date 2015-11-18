@@ -1,13 +1,18 @@
 ﻿var panelController = function () {
 
     function all(context) {
+        if (!localStorage.getItem('signed-in-user-bool')) {
+            context.redirect('#/auth');
+            return;
+        }
+
         templates.get('panel')
           .then(function (content) {
               context.$element().html(content);
           });
     }
 
-    function show(id) {
+    function show(id, selector) {
         templates.get('project')
           .then(function (content) {
               var $content = $(content);
@@ -17,6 +22,7 @@
                     $content.find('#project-name').text(project.Name);
                     $content.find('#project-date').text(project.CreatedOn);
                     $content.find('#project-content').html(project.Content);
+                    $content.find('#project-author').html('<i class="glyphicon glyphicon-user">' + project.Author.UserName + '</i>');
 
                     if (project.VideoUrl) {
                         var location = project.VideoUrl.substr(project.VideoUrl.indexOf('watch?v=') + 'watch?v='.length);
@@ -27,7 +33,7 @@
                         console.log(location);
                     }
 
-                    $('#projects-container').html($content);
+                    $(selector).html($content);
                 });
           });
     }

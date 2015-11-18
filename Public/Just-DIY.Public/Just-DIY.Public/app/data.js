@@ -11,17 +11,16 @@
                 toastr.success('Are you the six fingered man?', 'Inigo Montoya');
             })
             .catch(function (resp) {
-                var error = JSON.parse(resp.responseText);
-                toastr.error(error.ModelState[''][1]);
+                toastr.error('Just reenter everything... (hint: If the passwords match, try with different email)', 'You\'ve messed up!');
             });
     }
 
-    function login(user) {
+    function login(user, context) {
         jsonRequester.token('http://localhost:29004/Token', {
             Username: user.username,
             Password: user.password,
             grant_type: 'password'
-        });
+        }, context);
     }
 
     return {

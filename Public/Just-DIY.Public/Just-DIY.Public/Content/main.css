@@ -224,3 +224,7 @@ a:after {
 .project-data {
     cursor: pointer;
 }
+
+.auth-btn:hover {
+    background-color: #74CFAE;
+}

@@ -44,7 +44,7 @@
         return send('DELETE', url, options);
     }
 
-    function token(url, obj)
+    function token(url, obj, context)
     {
         $.ajax({
             method: 'POST',
@@ -62,6 +62,9 @@
             localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, resp.access_token);
             localStorage.setItem(LOCAL_STORAGE_IS_LOGEED, true);
             toastr.success('People who think they know everything are a great annoyance to those of us who do.', 'Isaak Asimov');
+            context.redirect('#/panel');
+        }).error(function () {
+            toastr.error('Please, be so kind to retry logging in.', 'Something went really, reallly, really wrong...');
         });
     }
 

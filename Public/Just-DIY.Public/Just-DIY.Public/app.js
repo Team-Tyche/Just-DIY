@@ -6,4 +6,11 @@
     });
 
     sammyApp.run('#/panel');
+
+    $(window).on('beforeunload', function () {
+        sessionStorage.setItem('lala', 'aa');
+        localStorage.removeItem('signed-in-user-username');
+        localStorage.removeItem('signed-in-user-auth-key');
+        localStorage.removeItem('signed-in-user-bool');
+    });
 }());
