@@ -4,7 +4,7 @@
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using Just_DIY.IdentityHelpers;
+    using IdentityHelpers;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
 
