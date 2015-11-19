@@ -1,4 +1,7 @@
 ﻿var data = (function () {
+
+    var serverUrl = 'http://just-diy.azurewebsites.net/';
+
     function register(user) {
         var reqUser = {
             Email: user.username,
@@ -6,7 +9,7 @@
             ConfirmPassword: user.password
         };
 
-        return jsonRequester.post('http://localhost:29004/api/Account/Register', { data: reqUser })
+        return jsonRequester.post(serverUrl + 'api/Account/Register', { data: reqUser })
             .then(function (resp) {
                 toastr.success('Are you the six fingered man?', 'Inigo Montoya');
             })
@@ -16,7 +19,7 @@
     }
 
     function login(user, context) {
-        jsonRequester.token('http://localhost:29004/Token', {
+        jsonRequester.token(serverUrl + 'Token', {
             Username: user.username,
             Password: user.password,
             grant_type: 'password'
