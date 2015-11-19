@@ -45,17 +45,37 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ControllerTests\ProjectControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ControllerTests\" />
     <Folder Include="IntegrationTests\" />
     <Folder Include="RouteTests\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Data\Just-DIY.Data\Just-DIY.Data.csproj">
+      <Project>{9e4d1193-edde-4007-ac7f-82d8d9bc2d27}</Project>
+      <Name>Just-DIY.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data\Just-DIY.IdentityHelpers\Just-DIY.IdentityHelpers.csproj">
+      <Project>{c0ddd4f7-b5bd-4d26-966b-7f549a567cb5}</Project>
+      <Name>Just-DIY.IdentityHelpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data\Just-DIY.Models\Just-DIY.Models.csproj">
+      <Project>{bf93cb6f-12e8-428d-ae6f-0115a478eda7}</Project>
+      <Name>Just-DIY.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Just-DIY\Just-DIY.Server.csproj">
+      <Project>{8ae0c2a7-9c52-4bc4-b83d-c67241781d65}</Project>
+      <Name>Just-DIY.Server</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
