@@ -6,6 +6,7 @@ using Just_DIY.Models.Projects;
 using System.Web;
 using Just_DIY.Data.Data;
 using System.Collections.Generic;
+using Moq;
 
 namespace Just_DIY.Tests.ControllerTests
 {
@@ -16,12 +17,14 @@ namespace Just_DIY.Tests.ControllerTests
     public class CategoryControllerTests
     {
         private IControllerBuilder<CategoryController> controller;
+        private Mock<IJustDIYData> fakeJustDIYData = new Mock<IJustDIYData>();    
 
         [TestInitialize]
         public void Init()
         {
+            // var data = new Mock<IJustDIYData>();
             this.controller = MyWebApi
-                .Controller<CategoryController>();
+                 .Controller<CategoryController>(() => new CategoryController(fakeJustDIYData.Object));
         }
 
         [TestMethod]
@@ -31,7 +34,7 @@ namespace Just_DIY.Tests.ControllerTests
                 .Calling(c => c.Get(0))
                 .ShouldReturn()
                 .Ok()
-                .WithResponseModelOfType<IList<Models.Project>>()
+                .WithResponseModelOfType<ICollection<Models.Project>>()
                 .Passing(model => model.OrderByDescending(x => x.CreatedOn).ToList());
         }
     }
