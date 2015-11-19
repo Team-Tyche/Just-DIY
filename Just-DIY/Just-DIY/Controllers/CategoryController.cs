@@ -28,10 +28,9 @@ namespace Just_DIY.Controllers
             if(projects.Count == 0)
             {
                 return this.NotFound();
-            } else
-            {
-                return this.Ok(projects.AsQueryable().ProjectTo<ProjectViewModel>());
             }
+
+            return this.Ok(projects.AsQueryable().ProjectTo<ProjectViewModel>());    
         }
     }
 }
