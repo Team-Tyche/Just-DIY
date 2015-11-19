@@ -10,9 +10,12 @@
 
     public class DropboxManager
     {
+        private const string DropboxAccessToken = "zXamRugG1cUAAAAAAAAC-wCufBmVWCLSW3o8adzSnTXQeaxEtQcOJxe2rRakauXY";
+        private const string SaveDirectoryName = "/JustDIY";
+
         public static async Task SaveBackup<T>(IList<T> data)
         {
-            using (var dropBoxClient = new DropboxClient("zXamRugG1cUAAAAAAAAC-wCufBmVWCLSW3o8adzSnTXQeaxEtQcOJxe2rRakauXY"))
+            using (var dropBoxClient = new DropboxClient(DropboxAccessToken))
             {
                 var backupContent = new StringBuilder();
                 var sb = new StringBuilder();
@@ -29,7 +32,7 @@
                     backupContent.Append(sb.ToString().TrimEnd(',') + Environment.NewLine);
                     sb.Clear();
                 }
-                await Upload(dropBoxClient, "/JustDIY", typeof(T).Name + "_backup_" + DateTime.Now + ".csv", backupContent.ToString());
+                await Upload(dropBoxClient, SaveDirectoryName, typeof(T).Name + "_backup_" + DateTime.Now + ".csv", backupContent.ToString());
             }
         }
 

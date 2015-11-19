@@ -21,7 +21,7 @@ namespace Just_DIY.Controllers
             this.data = data;
         }
 
-        public async Task<IHttpActionResult> Get(string id)
+        public async Task<IHttpActionResult> Put(string id)
         {
             switch (id.ToLowerInvariant())
             {
