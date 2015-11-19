@@ -14,8 +14,22 @@
         {
             using (var dropBoxClient = new DropboxClient("zXamRugG1cUAAAAAAAAC-wCufBmVWCLSW3o8adzSnTXQeaxEtQcOJxe2rRakauXY"))
             {
-                var backupContent = string.Join(Environment.NewLine, data);
-                await Upload(dropBoxClient, "/JustDIY", typeof(T).Name + "_backup_" + DateTime.Now + ".csv", backupContent);
+                var backupContent = new StringBuilder();
+                var sb = new StringBuilder();
+                foreach (var row in data)
+                {
+                    foreach (var property in row.GetType().GetProperties())
+                    {
+                        if (!property.ToString().StartsWith("System.Collections.Generic"))
+                        {
+                            sb.Append(property.GetValue(row) + ",");
+                        }
+                    }
+
+                    backupContent.Append(sb.ToString().TrimEnd(',') + Environment.NewLine);
+                    sb.Clear();
+                }
+                await Upload(dropBoxClient, "/JustDIY", typeof(T).Name + "_backup_" + DateTime.Now + ".csv", backupContent.ToString());
             }
         }
 
