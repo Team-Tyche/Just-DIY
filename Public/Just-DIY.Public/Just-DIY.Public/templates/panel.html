@@ -4,10 +4,8 @@
     <li><a data-toggle="tab" href="#all-projects"><i class="glyphicon glyphicon-th"></i> All Projects</a></li>
     <li><a data-toggle="tab" href="#favourite-projects"><i class="glyphicon glyphicon-heart"></i> Favourites</a></li>
 </ul>
-
 <div class="tab-content">
     <div id="post" class="tab-pane fade in active">
-
         <form id="post-project-form">
             <select class="form-control" id="post-select">
                 <option>Hardware</option>
@@ -23,54 +21,55 @@
                 </div>
             </div>
         </form>
-
         <script type="text/javascript">
-        tinymce.init({
-            selector: "#tinymce"
-        });
-
-        $('#post-project-form').submit(function () {
-            return false;
-        });
-
-        $('body').on('click', '#post-submit', function () {
-            var title = $('#post-title').val(),
-                url = $('#post-url').val(),
-                content = tinymce.get('tinymce').getContent();
-
-            var categoryFilter = $("#post-select option:selected").val();
-            var categoryId;
-            switch (categoryFilter) {
-                case 'Hardware': categoryId = 1; break;
-                case 'Software': categoryId = 2; break;
-            }
-
-            if (!/^(http\:\/\/|https\:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/watch\?v\=\w+$/.test(url)) {
-                url = null;
-            }
-
-            jsonRequester.get('http://localhost:29004/api/IdentifyMe', {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('signed-in-user-auth-key')
-                }
-            }).then(function (myId) {
-                jsonRequester.post('http://localhost:29004/api/Projects', {
-                    headers: { Authorization: 'Bearer ' + localStorage.getItem('signed-in-user-auth-key') },
-                    data: {
-                        "name": title,
-                        "createdOn": new Date().toJSON(),
-                        "content": content,
-                        "videoUrl": url,
-                        "authorId": myId,
-                        "categoryId": categoryId
-                    }
-                }).then(function (resp) {
-                    toastr.success('An idea isn\'t responsible for the people who believe in it.', 'Don Marquis');
-                });
+            tinymce.init({
+                selector: "#tinymce"
             });
 
-            $('#post-project-form')[0].reset();
-        });
+            $('#post-project-form').submit(function () {
+                return false;
+            });
+
+            $('body').on('click', '#post-submit', function () {
+                var title = $('#post-title').val(),
+                    url = $('#post-url').val(),
+                    content = tinymce.get('tinymce').getContent();
+
+                var categoryFilter = $("#post-select option:selected").val();
+                var categoryId;
+                switch (categoryFilter) {
+                    case 'Hardware': categoryId = 1; break;
+                    case 'Software': categoryId = 2; break;
+                }
+
+                if (!/^(http\:\/\/|https\:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/watch\?v\=\w+$/.test(url)) {
+                    url = null;
+                }
+                
+                var serverUrl = 'http://just-diy.azurewebsites.net/';
+
+                jsonRequester.get(serverUrl + 'api/IdentifyMe', {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('signed-in-user-auth-key')
+                    }
+                }).then(function (myId) {
+                    jsonRequester.post(serverUrl + 'api/Projects', {
+                        headers: { Authorization: 'Bearer ' + localStorage.getItem('signed-in-user-auth-key') },
+                        data: {
+                            "name": title,
+                            "createdOn": new Date().toJSON(),
+                            "content": content,
+                            "videoUrl": url,
+                            "authorId": myId,
+                            "categoryId": categoryId
+                        }
+                    }).then(function (resp) {
+                        toastr.success('An idea isn\'t responsible for the people who believe in it.', 'Don Marquis');
+                    });
+                });
+
+                $('#post-project-form')[0].reset();
+            });
         </script>
     </div>
     <div id="my-projects" class="tab-pane fade">
@@ -96,7 +95,8 @@
             }
 
             $(document).ready(function () {
-                jsonRequester.get('http://localhost:29004/api/ProjectsBy', 
+                var serverUrl = 'http://just-diy.azurewebsites.net/';
+                jsonRequester.get(serverUrl + 'api/ProjectsBy',
                     {
                         headers: {
                             Authorization: 'Bearer ' + localStorage.getItem('signed-in-user-auth-key')
@@ -107,7 +107,7 @@
 
                         $('body').on('click', '.project-del', function () {
                             var $this = $(this);
-                            jsonRequester.delete('http://localhost:29004/api/Projects/' + $this.attr('data-id'))
+                            jsonRequester.delete(serverUrl + 'api/Projects/' + $this.attr('data-id'))
                             .then(function () {
                                 $this.parent().parent().remove();
                                 toastr.success('Progress is man\'s ability to complicate simplicity.', 'Thor Heyerdahl');
@@ -123,7 +123,6 @@
         <div class="page-container">
             <div class="container">
                 <div class="row row-offcanvas row-offcanvas-left">
-
                     <!-- sidebar -->
                     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
                         <form id="filter-form">
@@ -132,13 +131,10 @@
                                 <option>Hardware</option>
                                 <option>Software</option>
                             </select>
-
                             <input type="search" id="filter-search" class="form-control" placeholder="Keyword" />
-
                             <a id="filter-submit" class="btn btn-block">Update</a>
                         </form>
                     </div>
-
                     <!-- main area -->
                     <div id="projects-container" class="col-xs-12 col-sm-9" style="padding: 1%">
                     </div><!-- /.col-xs-12 main -->
@@ -160,7 +156,8 @@
                         case 'Software': categoryId = 2; break;
                     }
 
-                    jsonRequester.get('http://localhost:29004/api/Category/' + categoryId)
+                    var serverUrl = 'http://just-diy.azurewebsites.net/';
+                    jsonRequester.get(serverUrl + 'api/Category/' + categoryId)
                         .then(function (resp) {
                             var $table = $('<table />');
 
@@ -191,7 +188,7 @@
                             $('body').on('click', '.like-project', function () {
                                 var $this = $(this);
 
-                                jsonRequester.post('http://localhost:29004/api/Favourites/' + $this.attr('data-id'), {
+                                jsonRequester.post(serverUrl+'api/Favourites/' + $this.attr('data-id'), {
                                     headers: {
                                         Authorization: 'Bearer ' + localStorage.getItem('signed-in-user-auth-key')
                                     }
@@ -211,54 +208,55 @@
         </script>
     </div>
     <div id="favourite-projects" class="tab-pane fade">
-         <script>
-             function updateFavs(resp) {
-                 var $table = $('<table />');
+        <script>
+            function updateFavs(resp) {
+                var $table = $('<table />');
 
-                 for (var ind = 0, len = resp.length; ind < len; ind++) {
-                     $table.append('<tr><td class="col-md-3">'
-                         + resp[ind].CreatedOn
-                         + '</td><td class="col-md-4">'
-                         + resp[ind].Category
-                         + '</td><td class="col-md-4"><strong>'
-                         + resp[ind].Name
-                         + '</strong></td>'
-                         + '<td><span class="glyphicon glyphicon-remove col-md-1 fav-del" data-id="'
-                         + resp[ind].Id
-                         + '" style="color: #f00; cursor: pointer"></span></td>'
-                         + '</tr>');
-                 }
+                for (var ind = 0, len = resp.length; ind < len; ind++) {
+                    $table.append('<tr><td class="col-md-3">'
+                        + resp[ind].CreatedOn
+                        + '</td><td class="col-md-4">'
+                        + resp[ind].Category
+                        + '</td><td class="col-md-4"><strong>'
+                        + resp[ind].Name
+                        + '</strong></td>'
+                        + '<td><span class="glyphicon glyphicon-remove col-md-1 fav-del" data-id="'
+                        + resp[ind].Id
+                        + '" style="color: #f00; cursor: pointer"></span></td>'
+                        + '</tr>');
+                }
 
-                 $('#favourite-projects').html($table);
-             }
+                $('#favourite-projects').html($table);
+            }
 
-             $(document).ready(function () {
-                 jsonRequester.get('http://localhost:29004/api/Favourites',
-                     {
-                         headers: {
-                             Authorization: 'Bearer ' + localStorage.getItem('signed-in-user-auth-key')
-                         }
-                     })
-                     .then(function (resp) {
-                         updateFavs(resp);
+            $(document).ready(function () {
+                var serverUrl = 'http://just-diy.azurewebsites.net/';
+                jsonRequester.get(serverUrl+'api/Favourites',
+                    {
+                        headers: {
+                            Authorization: 'Bearer ' + localStorage.getItem('signed-in-user-auth-key')
+                        }
+                    })
+                    .then(function (resp) {
+                        updateFavs(resp);
 
-                         $('body').on('click', '.fav-del', function () {
-                             var $this = $(this);
-                             jsonRequester.delete('http://localhost:29004/api/Favourites/' + $this.attr('data-id'),
-                                 {
-                                     headers: {
-                                         Authorization: 'Bearer ' + localStorage.getItem('signed-in-user-auth-key')
-                                     }
-                                 })
-                             .then(function () {
-                                 $this.parent().parent().remove();
-                                 toastr.success('Progress is man\'s ability to complicate simplicity.', 'Thor Heyerdahl');
-                             });
-                         });
-                     })
-                     .catch(function () {
-                     });
-             });
-         </script>
+                        $('body').on('click', '.fav-del', function () {
+                            var $this = $(this);
+                            jsonRequester.delete(serverUrl+'api/Favourites/' + $this.attr('data-id'),
+                                {
+                                    headers: {
+                                        Authorization: 'Bearer ' + localStorage.getItem('signed-in-user-auth-key')
+                                    }
+                                })
+                            .then(function () {
+                                $this.parent().parent().remove();
+                                toastr.success('Progress is man\'s ability to complicate simplicity.', 'Thor Heyerdahl');
+                            });
+                        });
+                    })
+                    .catch(function () {
+                    });
+            });
+        </script>
     </div>
 </div>
