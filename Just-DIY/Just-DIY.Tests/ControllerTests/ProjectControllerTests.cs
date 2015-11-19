@@ -1,69 +1,43 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Just_DIY.Tests.ControllerTests
+﻿namespace Just_DIY.Tests.ControllerTests
 {
-    /// <summary>
-    /// Summary description for ProjectControllerTests
-    /// </summary>
+    using System;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Controllers;
+    using Data.Data;
+    using Moq;
+    using MyTested.WebApi;
+    using MyTested.WebApi.Builders.Controllers;
+    using Just_DIY.Models;
+
     [TestClass]
     public class ProjectControllerTests
     {
-        public ProjectControllerTests()
+        private IControllerBuilder<ProjectsController> controller;
+        private Mock<IJustDIYData> fakeJustDIYData = new Mock<IJustDIYData>();
+
+        [TestInitialize]
+        public void Init()
         {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
+            this.fakeJustDIYData.Setup(m => m.Projects.Delete(1)).Returns(new Project
             {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
+                Author = new User(),
+                Category = Category.Hardware,
+                Content = "Hello, World!",
+                CreatedOn = DateTime.Now,
+                Name = "Arduino Uno hacks",
+                VideoUrl = "http://youtube.com/cats/",
+                Points = 5
+            });
+            this.controller = new ControllerBuilder<ProjectsController>(new ProjectsController(this.fakeJustDIYData.Object));
         }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
 
         [TestMethod]
-        public void TestMethod1()
+        public void MethodShouldDeleteProjectById()
         {
-            //
-            // TODO: Add test logic here
-            //
+            this.controller
+                .Calling(c => c.Delete(1))
+                .ShouldReturn()
+                .Ok();
         }
     }
 }

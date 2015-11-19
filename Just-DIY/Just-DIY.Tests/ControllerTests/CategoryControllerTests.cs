@@ -7,6 +7,8 @@ using System.Web;
 using Just_DIY.Data.Data;
 using System.Collections.Generic;
 using Moq;
+using Just_DIY.Models;
+using System;
 
 namespace Just_DIY.Tests.ControllerTests
 {
@@ -22,7 +24,6 @@ namespace Just_DIY.Tests.ControllerTests
         [TestInitialize]
         public void Init()
         {
-            // var data = new Mock<IJustDIYData>();
             this.controller = MyWebApi
                  .Controller<CategoryController>(() => new CategoryController(fakeJustDIYData.Object));
         }
@@ -34,8 +35,28 @@ namespace Just_DIY.Tests.ControllerTests
                 .Calling(c => c.Get(0))
                 .ShouldReturn()
                 .Ok()
-                .WithResponseModelOfType<ICollection<Models.Project>>()
+                .WithResponseModelOfType<IQueryable<Models.Project>>()
                 .Passing(model => model.OrderByDescending(x => x.CreatedOn).ToList());
+        }
+
+        [TestMethod]
+        public void MethodShouldGetCategoryById()
+        {
+            controller.
+                Calling(c => c.Get(1))
+                .ShouldReturn()
+                .Ok()
+                .WithResponseModelOfType<IQueryable<Models.Project>>()
+                .Passing(model => model.Where(m => m.Category == Category.Hardware).OrderByDescending(m => m.CreatedOn));
+        }
+
+        [TestMethod]
+        public void MethodShouldReturnNotFound()
+        {
+            controller.
+                Calling(c => c.Get(5))
+                .ShouldReturn()
+                .NotFound();
         }
     }
 }
