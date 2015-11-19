@@ -22,6 +22,8 @@
             return kernel;
         });
 
+        public static Func<object, object> DependenciesRegistration { get; set; }
+
         private static void RegisterServices(KernelBase kernel)
         {
             kernel.Bind<IdentityDbContext<User, CustomRole, int, CustomUserLogin, CustomUserRole, CustomUserClaim>>().To<Just_DIYDbContext>();
