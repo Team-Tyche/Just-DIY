@@ -1,7 +1,10 @@
 ﻿namespace Just_DIY.Tests.ControllerTests
 {
+<<<<<<< HEAD
     using System;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+=======
+>>>>>>> 4a7ba70071aa3776b155f331e83d0510b3dbfdb6
     using Controllers;
     using Data.Data;
     using Moq;
@@ -9,6 +12,12 @@
     using MyTested.WebApi.Builders.Controllers;
     using Just_DIY.Models;
 
+<<<<<<< HEAD
+=======
+    /// <summary>
+    /// Summary description for ProjectControllerTests
+    /// </summary>
+>>>>>>> 4a7ba70071aa3776b155f331e83d0510b3dbfdb6
     [TestClass]
     public class ProjectControllerTests
     {

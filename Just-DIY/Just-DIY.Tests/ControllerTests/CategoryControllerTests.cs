@@ -12,6 +12,10 @@ using System;
 
 namespace Just_DIY.Tests.ControllerTests
 {
+    using Data.Repositories;
+    using Models;
+    using MyTested.WebApi.Builders.Controllers;
+
     /// <summary>
     /// Summary description for CategoryController
     /// </summary>
@@ -24,19 +28,30 @@ namespace Just_DIY.Tests.ControllerTests
         [TestInitialize]
         public void Init()
         {
+<<<<<<< HEAD
             this.controller = MyWebApi
                  .Controller<CategoryController>(() => new CategoryController(fakeJustDIYData.Object));
+=======
+            //this.fakeJustDIYData.Setup
+            this.controller = new ControllerBuilder<CategoryController>(new CategoryController(this.fakeJustDIYData.Object));
+>>>>>>> 4a7ba70071aa3776b155f331e83d0510b3dbfdb6
         }
 
         [TestMethod]
         public void MethodShouldGetCategoryByIdWithZero()
         {
-            controller
+            this.controller
                 .Calling(c => c.Get(0))
                 .ShouldReturn()
+<<<<<<< HEAD
                 .Ok()
                 .WithResponseModelOfType<IQueryable<Models.Project>>()
                 .Passing(model => model.OrderByDescending(x => x.CreatedOn).ToList());
+=======
+                .Ok();
+            //.WithResponseModelOfType<Project>()
+            //.Passing(model => model.Category == Category.Hardware);
+>>>>>>> 4a7ba70071aa3776b155f331e83d0510b3dbfdb6
         }
 
         [TestMethod]
